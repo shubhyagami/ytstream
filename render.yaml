@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: vidstream
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: RAPIDAPI_KEY
+        sync: false

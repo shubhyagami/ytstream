@@ -1,0 +1,23 @@
+server:
+  port: ${PORT:10000}
+
+spring:
+  application:
+    name: vidstream
+  thymeleaf:
+    cache: true
+    mode: HTML
+    encoding: UTF-8
+
+vidstream:
+  temp-dir: ${VIDSTREAM_TEMP_DIR:/tmp/vidstream}
+  ytdlp:
+    path: ${YTDLP_PATH:yt-dlp}
+  rapidapi:
+    key: ${RAPIDAPI_KEY}
+    download-host: ${RAPIDAPI_DOWNLOAD_HOST:youtube-mp36.p.rapidapi.com}
+
+logging:
+  level:
+    com.vidstream: INFO
+    org.springframework: WARN

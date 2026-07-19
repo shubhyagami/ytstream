@@ -1,0 +1,11 @@
+.gradle/
+build/
+*.class
+*.jar
+*.war
+.idea/
+*.iml
+out/
+target/
+/tmp/
+/tmp/vidstream-*/
