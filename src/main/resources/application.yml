@@ -15,7 +15,7 @@ vidstream:
     path: ${YTDLP_PATH:yt-dlp}
   rapidapi:
     key: ${RAPIDAPI_KEY:e9f2c625ebmsh6cd2de7109f2f5ep1f9991jsn4f3b636412b2}
-    download-host: ${RAPIDAPI_DOWNLOAD_HOST:youtube-mp36.p.rapidapi.com}
+    download-host: ${RAPIDAPI_DOWNLOAD_HOST:ytstream-download-youtube-videos.p.rapidapi.com}
 
 logging:
   level:
