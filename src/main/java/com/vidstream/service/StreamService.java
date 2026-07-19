@@ -48,7 +48,7 @@ public class StreamService {
     @Value("${vidstream.rapidapi.key}")
     private String rapidApiKey;
 
-    @Value("${vidstream.rapidapi.download-host:youtube-mp36.p.rapidapi.com}")
+    @Value("${vidstream.rapidapi.download-host:ytstream-download-youtube-videos.p.rapidapi.com}")
     private String rapidApiDownloadHost;
 
     private final TempFileManager tempFileManager;
@@ -110,13 +110,13 @@ public class StreamService {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    // Strategy 1: RapidAPI youtube-mp36
+    // Strategy 1: RapidAPI ytstream-download
     // ══════════════════════════════════════════════════════════════════════════
 
     @SuppressWarnings("unchecked")
     private Path downloadWithRapidApi(String videoId, Path dir, String token) throws IOException, InterruptedException {
         String apiUrl = "https://" + rapidApiDownloadHost + "/dl?id=" + videoId;
-        log.info("RapidAPI mp36 request: {}", apiUrl);
+        log.info("RapidAPI ytstream request: {}", apiUrl);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
@@ -134,46 +134,75 @@ public class StreamService {
         }
 
         Map<String, Object> json = mapper.readValue(response.body(), new TypeReference<>() {});
-        String status = (String) json.get("status");
-        if (!"ok".equals(status)) {
-            log.warn("RapidAPI status: {}", status);
+        if (!"OK".equals(json.get("status"))) {
+            log.warn("RapidAPI status not OK");
             return null;
         }
 
-        String downloadUrl = (String) json.get("link");
-        if (downloadUrl == null || downloadUrl.isBlank()) {
-            log.warn("RapidAPI returned no download link");
-            return null;
+        // Try combined format first (itag=18 = 360p with audio)
+        Object formatsObj = json.get("formats");
+        if (formatsObj instanceof List) {
+            for (Object f : (List<?>) formatsObj) {
+                if (f instanceof Map<?, ?> fm) {
+                    Object urlObj = fm.get("url");
+                    String url = urlObj instanceof String s ? s : null;
+                    if (url != null && !url.isBlank()) {
+                        String mime = fm.get("mimeType") instanceof String s ? s : "";
+                        String ext = mime.contains("audio") ? "mp3" : "mp4";
+                        Path out = dir.resolve(token + "." + ext);
+                        log.info("Downloading combined format: {}", fm.get("qualityLabel"));
+                        downloadToFile(url, out);
+                        if (Files.size(out) >= 10_000) return out;
+                        Files.deleteIfExists(out);
+                    }
+                }
+            }
         }
 
-        // Download the actual MP3 file
-        Path outputPath = dir.resolve(token + ".mp3");
-        log.info("Downloading from RapidAPI: title={} filesize={}", json.get("title"), json.get("filesize"));
+        // Fallback to best audio format
+        Object adaptiveObj = json.get("adaptiveFormats");
+        if (adaptiveObj instanceof List) {
+            String bestUrl = null;
+            long bestSize = 0;
+            for (Object f : (List<?>) adaptiveObj) {
+                if (f instanceof Map<?, ?> fm) {
+                    Object mimeObj = fm.get("mimeType");
+                    String mime = mimeObj instanceof String s ? s : "";
+                    if (!mime.startsWith("audio/")) continue;
+                    Object urlObj = fm.get("url");
+                    String url = urlObj instanceof String s ? s : null;
+                    if (url == null || url.isBlank()) continue;
+                    long size = 0;
+                    Object clObj = fm.get("contentLength");
+                    if (clObj instanceof Number n) size = n.longValue();
+                    if (size > bestSize) { bestSize = size; bestUrl = url; }
+                }
+            }
+            if (bestUrl != null) {
+                Path out = dir.resolve(token + ".m4a");
+                downloadToFile(bestUrl, out);
+                if (Files.size(out) >= 10_000) return out;
+                Files.deleteIfExists(out);
+            }
+        }
 
-        HttpRequest dlRequest = HttpRequest.newBuilder()
-                .uri(URI.create(downloadUrl))
+        log.warn("RapidAPI returned no usable download URL");
+        return null;
+    }
+
+    private void downloadToFile(String url, Path output) throws IOException, InterruptedException {
+        HttpRequest dlReq = HttpRequest.newBuilder()
+                .uri(URI.create(url))
                 .header("User-Agent", USER_AGENT)
-                .timeout(Duration.ofMinutes(3))
-                .GET()
-                .build();
-
-        HttpResponse<InputStream> dlResponse = http.send(dlRequest, HttpResponse.BodyHandlers.ofInputStream());
-        if (dlResponse.statusCode() != 200) {
-            throw new IOException("Download returned status " + dlResponse.statusCode());
+                .timeout(Duration.ofMinutes(5))
+                .GET().build();
+        HttpResponse<InputStream> dlResp = http.send(dlReq, HttpResponse.BodyHandlers.ofInputStream());
+        if (dlResp.statusCode() != 200) {
+            throw new IOException("Download returned status " + dlResp.statusCode());
         }
-
-        try (InputStream in = dlResponse.body()) {
-            Files.copy(in, outputPath, StandardCopyOption.REPLACE_EXISTING);
+        try (InputStream in = dlResp.body()) {
+            Files.copy(in, output, StandardCopyOption.REPLACE_EXISTING);
         }
-
-        long fileSize = Files.size(outputPath);
-        if (fileSize < 10_000) {
-            Files.deleteIfExists(outputPath);
-            throw new IOException("Downloaded file too small (" + fileSize + " bytes)");
-        }
-
-        log.info("RapidAPI MP3 saved: {} ({} bytes)", outputPath.getFileName(), fileSize);
-        return outputPath;
     }
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -190,13 +219,11 @@ public class StreamService {
         command.add(ytdlpPath);
 
         if (isAudio) {
-            command.add(url);
-            command.add("--extract-audio");
+            command.add("-x");
             command.add("--audio-format"); command.add("m4a");
-            command.add("--audio-quality"); command.add("0");
+            command.add(url);
         } else {
-            command.add("--extractor-args"); command.add("youtube:player_client=android");
-            command.add("-f"); command.add("18/bestaudio");
+            command.add("-f"); command.add("best[height<=720]");
             command.add(url);
         }
 
