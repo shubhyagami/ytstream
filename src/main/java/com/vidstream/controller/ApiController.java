@@ -48,20 +48,6 @@ public class ApiController {
         }
     }
 
-    // ── Available Formats ────────────────────────────────────────────────────
-
-    @GetMapping("/formats")
-    public ResponseEntity<?> getFormats(@RequestParam String id) {
-        try {
-            List<StreamService.YtStreamFormat> formats = streamService.getFormats(id);
-            return ResponseEntity.ok(Map.of("formats", formats));
-        } catch (Exception e) {
-            log.error("Formats error id={}: {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", e.getMessage()));
-        }
-    }
-
     // ── Stream Token ─────────────────────────────────────────────────────────
 
     @PostMapping("/stream")
@@ -69,13 +55,12 @@ public class ApiController {
         String id    = body.get("id");
         String source = body.getOrDefault("source", "youtube");
         String title  = body.getOrDefault("title", "Unknown");
-        String quality = body.get("quality");
 
         if (id == null || id.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("error", "id is required"));
         }
         try {
-            String token = streamService.prepareStream(id, source, title, quality);
+            String token = streamService.prepareStream(id, source, title);
             // Return mime so frontend knows audio vs video
             StreamService.StreamInfo info = streamService.getStream(token);
             String mime = info != null ? info.mimeType() : "audio/mpeg";

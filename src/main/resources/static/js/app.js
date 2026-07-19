@@ -55,9 +55,6 @@ const els = {
   videoModal:     $('video-modal'),
   videoPlayer:    $('video-player'),
   videoClose:     $('video-close'),
-  qualityModal:   $('quality-modal'),
-  qualityList:    $('quality-list'),
-  qualityCancel:  $('quality-cancel'),
 };
 
 // Native audio element for audio-only tracks
@@ -122,10 +119,6 @@ function bindEvents() {
   els.videoModal.addEventListener('click', e => { if (e.target === els.videoModal) closeVideoModal(); });
   els.videoPlayer.addEventListener('ended', onTrackEnded);
 
-  // Quality modal
-  els.qualityCancel.addEventListener('click', closeQualityModal);
-  els.qualityModal.addEventListener('click', e => { if (e.target === els.qualityModal) closeQualityModal(); });
-
   // Keyboard shortcuts
   document.addEventListener('keydown', onKeyDown);
 }
@@ -172,12 +165,7 @@ function renderResults() {
         addToQueue(state.results[i]);
         return;
       }
-      const item = state.results[i];
-      if (item.source === 'youtube' && item.type === 'video') {
-        showQualityPicker(item);
-      } else {
-        playNow(item);
-      }
+      playNow(state.results[i]);
     });
   });
 }
@@ -280,7 +268,7 @@ function playQueueItem(idx) {
 }
 
 // ── Playback ───────────────────────────────────────────────
-async function playNow(item, fromQueue = false, quality = null) {
+async function playNow(item, fromQueue = false) {
   if (!fromQueue) {
     if (!state.queue.find(q => q.id === item.id)) {
       state.queue.push(item);
@@ -297,12 +285,10 @@ async function playNow(item, fromQueue = false, quality = null) {
   state.isStreaming = true;
 
   try {
-    const body = { id: item.id, source: item.source, title: item.title };
-    if (quality) body.quality = quality;
     const res = await fetch(`${API}/stream`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify({ id: item.id, source: item.source, title: item.title })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Stream request failed');
@@ -503,90 +489,6 @@ function closeVideoModal() {
   state.isPlaying = false;
   updatePlayBtn();
   document.title = 'VidStream';
-}
-
-// ── Quality Picker ───────────────────────────────────────────
-let _pendingQualityItem = null;
-
-async function showQualityPicker(item) {
-  _pendingQualityItem = item;
-  els.qualityList.innerHTML = '<div class="spinner" style="margin:20px auto"></div>';
-  els.qualityModal.classList.add('show');
-
-  try {
-    const res = await fetch(`${API}/formats?id=${encodeURIComponent(item.id)}`);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to load formats');
-
-    const formats = data.formats || [];
-    // Deduplicate by qualityLabel: pick the best (largest contentLength) per label
-    const bestPerLabel = new Map();
-    for (const f of formats) {
-      const label = f.qualityLabel;
-      if (!label || !f.hasVideo) continue;
-      const existing = bestPerLabel.get(label);
-      if (!existing || f.contentLength > existing.contentLength) {
-        bestPerLabel.set(label, f);
-      }
-    }
-
-    const sorted = [...bestPerLabel.entries()]
-      .sort((a, b) => parsePixels(b[0]) - parsePixels(a[0]));
-
-    if (sorted.length === 0) {
-      // No video formats found, play directly
-      closeQualityModal();
-      playNow(item);
-      return;
-    }
-
-    els.qualityList.innerHTML = sorted.map(([label, f]) => `
-      <button class="quality-option" data-label="${escHtml(label)}">
-        <span class="quality-label">${escHtml(label)}</span>
-        <span class="quality-size">${fmtSize(f.contentLength)}</span>
-      </button>`).join('') +
-      '<button class="quality-option quality-audio-only" data-label="audio">Audio Only</button>';
-
-    els.qualityList.querySelectorAll('.quality-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const label = btn.dataset.label;
-        closeQualityModal();
-        if (label === 'audio') {
-          playNow({ ...item, type: 'audio' });
-        } else {
-          playNowWithQuality(item, label);
-        }
-      });
-    });
-  } catch (e) {
-    closeQualityModal();
-    showToast('Failed to load formats: ' + e.message, 'error');
-    playNow(item);
-  }
-}
-
-function closeQualityModal() {
-  els.qualityModal.classList.remove('show');
-  _pendingQualityItem = null;
-}
-
-function parsePixels(label) {
-  const m = label.match(/(\d+)/);
-  return m ? parseInt(m[1], 10) : 0;
-}
-
-function fmtSize(bytes) {
-  if (!bytes || bytes <= 0) return '';
-  const mb = bytes / (1024 * 1024);
-  return mb >= 1 ? mb.toFixed(1) + ' MB' : (bytes / 1024).toFixed(0) + ' KB';
-}
-
-let _pendingQuality = null;
-
-async function playNowWithQuality(item, quality) {
-  _pendingQuality = quality;
-  await playNow(item, false, quality);
-  _pendingQuality = null;
 }
 
 // ── Stream Overlay ─────────────────────────────────────────

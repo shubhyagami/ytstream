@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,7 +32,6 @@ public class StreamService {
     private static final Logger log = LoggerFactory.getLogger(StreamService.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
-    private static final String YTSTREAM_API_HOST = "ytstream-download-youtube-videos.p.rapidapi.com";
 
     private static final HttpClient http = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(15))
@@ -53,9 +51,6 @@ public class StreamService {
     @Value("${vidstream.rapidapi.download-host:youtube-mp36.p.rapidapi.com}")
     private String rapidApiDownloadHost;
 
-    @Value("${vidstream.ffmpeg.path:ffmpeg}")
-    private String ffmpegPath;
-
     private final TempFileManager tempFileManager;
 
     public StreamService(TempFileManager tempFileManager) {
@@ -64,20 +59,12 @@ public class StreamService {
 
     public record StreamInfo(Path path, long size, String mimeType) {}
 
-    public record YtStreamFormat(int itag, String qualityLabel, String mimeType, String url,
-                                  long contentLength, boolean hasVideo, boolean hasAudio) {}
-
     /**
      * Multi-strategy download pipeline:
-     * 1. ytstream-download (YouTube video with quality selection, uses ffmpeg merge)
-     * 2. RapidAPI mp36 (fast, no tools required, works on datacenter IPs)
-     * 3. yt-dlp fallback (if installed)
+     * 1. RapidAPI mp36 (fast, no tools required, works on datacenter IPs)
+     * 2. yt-dlp fallback (if installed)
      */
     public String prepareStream(String id, String source, String title) throws IOException, InterruptedException {
-        return prepareStream(id, source, title, null);
-    }
-
-    public String prepareStream(String id, String source, String title, String quality) throws IOException, InterruptedException {
         String token = UUID.randomUUID().toString().replace("-", "");
         Path dir = Paths.get(tempDir);
         Files.createDirectories(dir);
@@ -85,23 +72,7 @@ public class StreamService {
         String videoId = extractVideoId(id, source);
         List<String> errors = new ArrayList<>();
 
-        // ── Strategy 1: ytstream-download (YouTube video with quality) ──────
-        if ("youtube".equals(source) && quality != null) {
-            try {
-                Path result = downloadWithYtStreamApi(videoId, quality, dir, token);
-                if (result != null) {
-                    String mime = detectMime(result);
-                    tempFileManager.register(token, result, mime);
-                    log.info("✓ Stream ready via ytstream: token={} quality={} size={}KB", token, quality, Files.size(result) / 1024);
-                    return token;
-                }
-            } catch (Exception e) {
-                errors.add("ytstream: " + e.getMessage());
-                log.warn("ytstream download failed for {} quality={}: {}", videoId, quality, e.getMessage());
-            }
-        }
-
-        // ── Strategy 2: RapidAPI mp36 (YouTube → MP3) ────────────────────────
+        // ── Strategy 1: RapidAPI mp36 (YouTube → MP3) ────────────────────────
         if ("youtube".equals(source) || "spotify".equals(source)) {
             try {
                 Path result = downloadWithRapidApi(videoId, dir, token);
@@ -117,7 +88,7 @@ public class StreamService {
             }
         }
 
-        // ── Strategy 3: yt-dlp (supports all sources) ────────────────────────
+        // ── Strategy 2: yt-dlp (supports all sources) ────────────────────────
         try {
             Path result = downloadWithYtDlp(id, source, dir, token);
             if (result != null) {
@@ -139,187 +110,7 @@ public class StreamService {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    // Strategy 1: ytstream-download (YouTube video with quality selection)
-    // ══════════════════════════════════════════════════════════════════════════
-
-    @SuppressWarnings("unchecked")
-    public List<YtStreamFormat> getFormats(String videoId) throws IOException, InterruptedException {
-        String apiUrl = "https://" + YTSTREAM_API_HOST + "/dl?id=" + videoId;
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .header("x-rapidapi-host", YTSTREAM_API_HOST)
-                .header("x-rapidapi-key", rapidApiKey)
-                .header("Accept", "application/json")
-                .timeout(Duration.ofSeconds(15))
-                .GET().build();
-
-        HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
-        if (resp.statusCode() != 200) return List.of();
-
-        Map<String, Object> json = mapper.readValue(resp.body(), new TypeReference<>() {});
-        if (!"OK".equals(json.get("status"))) return List.of();
-
-        List<YtStreamFormat> formats = new ArrayList<>();
-
-        Object formatsObj = json.get("formats");
-        if (formatsObj instanceof List) {
-            for (Object f : (List<?>) formatsObj) {
-                if (f instanceof Map<?, ?> fm) {
-                    formats.add(parseYtFormat(fm, true, true));
-                }
-            }
-        }
-
-        Object adaptiveObj = json.get("adaptiveFormats");
-        if (adaptiveObj instanceof List) {
-            for (Object f : (List<?>) adaptiveObj) {
-                if (f instanceof Map<?, ?> fm) {
-                    Object mimeObj = fm.get("mimeType");
-                    String mime = mimeObj instanceof String s ? s : "";
-                    boolean isVideo = mime.startsWith("video/");
-                    boolean isAudio = mime.startsWith("audio/");
-                    formats.add(parseYtFormat(fm, isVideo, isAudio));
-                }
-            }
-        }
-
-        return formats;
-    }
-
-    @SuppressWarnings("unchecked")
-    private YtStreamFormat parseYtFormat(Map<?, ?> fm, boolean hasVideo, boolean hasAudio) {
-        int itag = 0;
-        Object itagObj = fm.get("itag");
-        if (itagObj instanceof Number n) itag = n.intValue();
-
-        Object qlObj = fm.get("qualityLabel");
-        String qualityLabel = qlObj instanceof String s ? s : "";
-        Object mtObj = fm.get("mimeType");
-        String mimeType = mtObj instanceof String s ? s : "application/octet-stream";
-        Object uObj = fm.get("url");
-        String url = uObj instanceof String s ? s : "";
-        long contentLength = 0;
-        Object clObj = fm.get("contentLength");
-        if (clObj instanceof Number n) contentLength = n.longValue();
-
-        return new YtStreamFormat(itag, qualityLabel, mimeType, url, contentLength, hasVideo, hasAudio);
-    }
-
-    private Path downloadWithYtStreamApi(String videoId, String quality, Path dir, String token) throws IOException, InterruptedException {
-        List<YtStreamFormat> formats = getFormats(videoId);
-        if (formats.isEmpty()) throw new IOException("No formats returned from ytstream API");
-
-        // Normalize requested quality label (e.g. "360p" -> "360p", "720" -> "720p")
-        String targetQuality = quality.contains("p") ? quality : quality + "p";
-
-        // Try combined format first (hasVideo && hasAudio) matching quality
-        YtStreamFormat combined = formats.stream()
-                .filter(f -> f.hasVideo && f.hasAudio && targetQuality.equals(f.qualityLabel))
-                .findFirst().orElse(null);
-
-        // Also try itag=18 (360p combined) as fallback
-        if (combined == null) {
-            combined = formats.stream()
-                    .filter(f -> f.hasVideo && f.hasAudio && f.itag == 18)
-                    .findFirst().orElse(null);
-        }
-
-        if (combined != null && combined.url != null && !combined.url.isBlank()) {
-            Path outFile = dir.resolve(token + ".mp4");
-            log.info("Downloading combined format {} ({}): {}", combined.itag, combined.qualityLabel, videoId);
-            downloadToFile(combined.url, outFile);
-            if (Files.size(outFile) >= 10_000) return outFile;
-            Files.deleteIfExists(outFile);
-        }
-
-        // Adaptive: find best video-only + best audio, merge with ffmpeg
-        YtStreamFormat videoFmt = formats.stream()
-                .filter(f -> f.hasVideo && !f.hasAudio && targetQuality.equals(f.qualityLabel)
-                        && f.url != null && !f.url.isBlank())
-                .max(Comparator.comparingLong(f -> f.contentLength))
-                .orElse(null);
-
-        YtStreamFormat audioFmt = formats.stream()
-                .filter(f -> f.hasAudio && !f.hasVideo && f.url != null && !f.url.isBlank())
-                .max(Comparator.comparingLong(f -> f.contentLength))
-                .orElse(null);
-
-        if (videoFmt == null) {
-            throw new IOException("No video format found for quality " + quality);
-        }
-
-        Path videoFile = dir.resolve(token + "_video." + extFromMime(videoFmt.mimeType));
-        Path audioFile = audioFmt != null ? dir.resolve(token + "_audio." + extFromMime(audioFmt.mimeType)) : null;
-        Path outFile = dir.resolve(token + ".mp4");
-
-        log.info("Downloading video {} ({}): {}", videoFmt.itag, videoFmt.qualityLabel, videoId);
-        downloadToFile(videoFmt.url, videoFile);
-
-        if (audioFmt != null) {
-            log.info("Downloading audio {}: {}", audioFmt.itag, videoId);
-            downloadToFile(audioFmt.url, audioFile);
-        }
-
-        // Merge with ffmpeg
-        if (audioFile != null && Files.exists(audioFile)) {
-            try {
-                mergeWithFfmpeg(videoFile, audioFile, outFile);
-                Files.deleteIfExists(videoFile);
-                Files.deleteIfExists(audioFile);
-                if (Files.size(outFile) >= 10_000) return outFile;
-            } catch (Exception e) {
-                log.warn("ffmpeg merge failed, using video-only: {}", e.getMessage());
-                if (Files.size(videoFile) >= 10_000) return videoFile;
-            }
-        }
-
-        if (Files.size(videoFile) >= 10_000) return videoFile;
-
-        throw new IOException("Downloaded file too small");
-    }
-
-    private void downloadToFile(String url, Path output) throws IOException, InterruptedException {
-        HttpRequest dlReq = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("User-Agent", USER_AGENT)
-                .timeout(Duration.ofMinutes(5))
-                .GET().build();
-        HttpResponse<InputStream> dlResp = http.send(dlReq, HttpResponse.BodyHandlers.ofInputStream());
-        if (dlResp.statusCode() != 200) {
-            throw new IOException("Download returned status " + dlResp.statusCode());
-        }
-        try (InputStream in = dlResp.body()) {
-            Files.copy(in, output, StandardCopyOption.REPLACE_EXISTING);
-        }
-    }
-
-    private void mergeWithFfmpeg(Path video, Path audio, Path output) throws IOException, InterruptedException {
-        List<String> cmd = List.of(
-                ffmpegPath, "-i", video.toAbsolutePath().toString(),
-                "-i", audio.toAbsolutePath().toString(),
-                "-c:v", "copy", "-c:a", "aac",
-                "-movflags", "+faststart",
-                "-y", output.toAbsolutePath().toString()
-        );
-        ProcessBuilder pb = new ProcessBuilder(cmd);
-        pb.redirectErrorStream(true);
-        Process proc = pb.start();
-        String out = new String(proc.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-        int exit = proc.waitFor();
-        if (exit != 0) {
-            throw new IOException("ffmpeg exit " + exit + ": " + (out.length() > 200 ? out.substring(0, 200) : out));
-        }
-    }
-
-    private String extFromMime(String mime) {
-        if (mime.contains("mp4")) return "mp4";
-        if (mime.contains("webm")) return "webm";
-        if (mime.contains("3gpp")) return "3gp";
-        return "mp4";
-    }
-
-    // ══════════════════════════════════════════════════════════════════════════
-    // Strategy 2: RapidAPI youtube-mp36
+    // Strategy 1: RapidAPI youtube-mp36
     // ══════════════════════════════════════════════════════════════════════════
 
     @SuppressWarnings("unchecked")
