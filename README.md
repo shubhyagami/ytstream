@@ -36,7 +36,29 @@ Get up and running with `ytstream` in three simple steps:
    java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
    ```
 
+## Pro Tips
+
+- **Specify output format**: Use `--format` with `mp4`, `mp3`, or `webm` to control the downloaded file type.
+- **Handle playlists efficiently**: Add `--playlist` to download every video in a playlist sequentially, with automatic rate limiting.
+- **Stream without saving**: Pass `--stream-only` to play the video directly in your terminal (requires compatible media player).
+- **Organize downloads**: Use `--output-dir` to set a custom folder for all output files.
+
+## Weekly Highlight
+
+**This Week's Feature: Playlist Streaming**  
+Stream entire YouTube playlists with a single command. ytstream intelligently queues videos and handles rate limiting. Try it:
+
+```bash
+java -jar target/ytstream-1.0.0.jar --playlist "https://youtube.com/playlist?list=PL..."
+```
+
 ## Changelog
+
+### 2026-07-27 – v1.0.1
+- Minor improvements to playlist streaming stability.
+- Fixed progress bar display for large files (>2 GB).
+- Added `--stream-only` flag for real-time playback without saving.
+- Optimized memory usage during concurrent downloads.
 
 ### 2026-07-25 – v1.0.0
 - Initial release of ytstream.
