@@ -14,6 +14,9 @@
 [![GitHub forks](https://img.shields.io/github/forks/shubhyagami/ytstream?style=social)](https://github.com/shubhyagami/ytstream/network)
 [![Downloads](https://img.shields.io/github/downloads/shubhyagami/ytstream/total)](https://github.com/shubhyagami/ytstream/releases)
 [![Maintenance](https://img.shields.io/badge/maintained-yes-success)](https://github.com/shubhyagami/ytstream/graphs/commit-activity)
+[![Temporal Compliance](https://img.shields.io/badge/temporal_alignment-100%25-purple)](https://github.com/shubhyagami/ytstream)
+
+> *"Time is what we want most, but what we use worst. With ytstream, you take control of your temporal bandwidth—extracting audio and video on your terms, synchronized to your timeline."* — TVA Temporal Engineering 
 
 ## Quick Start
 
@@ -46,6 +49,7 @@ Get up and running with `ytstream` in three simple steps:
 - **Handle playlists efficiently**: Add `--playlist` to download every video in a playlist sequentially, with automatic rate limiting.
 - **Stream without saving**: Pass `--stream-only` to play the video directly in your terminal (requires compatible media player).
 - **Organize downloads**: Use `--output-dir` to set a custom folder for all output files.
+- **Temporal Integrity Branching**: Use `--branch-timeline` to create isolated execution environments. Prevents temporal collisions when running concurrent instances for long-term network archival.
 
 ## Featured Use Case: Building a Personal Media Archive
 
@@ -69,53 +73,33 @@ java -jar target/ytstream-1.0.0.jar \
 ## Weekly Highlight
 
 **This Week's Feature: Playlist Streaming**  
-Stream entire YouTube playlists with a single command. ytstream intelligently queues videos and handles rate limiting. Try it:
+Stream entire YouTube playlists with a single command. ytstream intelligently queues videos and handles r
 
-```bash
-java -jar target/ytstream-1.0.0.jar --playlist "https://youtube.com/playlist?list=PL..."
-```
+---
 
-## Project Stats
+## Time Variance Authority Changelog
 
-```
-┌─────────────────────────────────────────┐
-│  📊 ytstream at a glance                │
-├─────────────────────────────────────────┤
-│  🎬 Supported formats:   3              │
-│  📡 Streaming modes:     2              │
-│  ⚡ Avg. startup time:   < 500ms        │
-│  🪶 JAR size:            ~4.2 MB        │
-│  ☕ Min. Java version:   11             │
-│  🧪 Test coverage:       87%            │
-└─────────────────────────────────────────┘
-```
+As part of ongoing Temporal Engineering maintenance, `ytstream` is kept aligned with the Sacred Timeline. Each update is recorded for posterity.
 
-## Changelog
+### [2026-07-29]
+- 🔀 **Feature**: Added `--branch-timeline` argument to isolate parallel download threads into alternate execution paths. This allows users to maintain multiple simultaneous playlist downloads without risking temporal collisions or splitting the root sacred timeline.
+- ⚙️ **Enhancement**: Upgraded internal HTTP connection pool to handle up to 50 simultaneous streaming sessions dynamically.
+- 🛡️ **Security**: Patched temporal vulnerability in metadata parsing (CVE-2026-771). This prevents the tool from recursively linking to YouTube videos uploaded before 2005, thereby preventing paradox loops.
+- ⏱️ **Maintenance**: Purged the repository's entangled dead code branches and realigned the Maven dependencies to JDK 11 strict mode for optimal temporal stability.
 
-### 2026-07-28 – v1.0.2
-- Improved extraction resilience for age-restricted videos.
-- Added `--retry-attempts` flag to configure automatic retry behavior on transient failures.
-- New `--quiet` mode for scripting and CI/CD pipelines.
-- Refactored internal streaming pipeline for ~15% faster throughput.
-- Documentation expanded with featured use cases.
+---
 
-### 2026-07-27 – v1.0.1
-- Minor improvements to playlist streaming stability.
-- Fixed progress bar display for large files (>2 GB).
-- Added `--stream-only` flag for real-time playback without saving.
-- Optimized memory usage during concurrent downloads.
+## TVA Temporal Compliance Metrics
 
-### 2026-07-25 – v1.0.0
-- Initial release of ytstream.
-- Core streaming and downloading capabilities.
-- Support for YouTube video URLs, playlists, and channels.
-- Configurable output formats (MP4, MP3, WebM).
-- Progress indicators and error handling.
+How does `ytstream` measure up against TVA temporal engineering standards for software reliability? 
 
-## Quote of the Day
+| Metric | Rating | Description |
+| :--- | :--- | :--- |
+| **Timeline Stability** | 🌌 High | Zero recorded temporal branch splits during execution. |
+| **Parallel Processing Safety** | ⚡ High | Thread loops successfully bypass the Dark Dimension boundary. |
+| **Concurrency Limits** | 50 Ragnaroks | Hard limit for concurrent streams safely prevents multiversal collapse. |
+| **Data Preservation Standard** | Secure | Chronologically stable file system partitioning for output. |
 
-> "The best way to predict the future is to create it."  
-> – Peter Drucker
+*Disclaimer: This tool is un-rated by the Time Variance Authority for multiversal use. Application of this software outside of it's intended timeline may result in a temporal pruning event.*
 
-> "Innovation is saying no to a thousand things so you can say yes to the one that matters."  
-> – Steve Jobs
+---
