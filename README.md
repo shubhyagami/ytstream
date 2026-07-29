@@ -58,42 +58,28 @@ Imagine curating a personal knowledge base from your favorite educational YouTub
 ```bash
 # Archive an entire channel's lectures as MP3 for offline podcast listening
 java -jar target/ytstream-1.0.0.jar \
-  --channel "https://www.youtube.com/c/3Blue1Brown" \
+  --channel "https://www.youtube.com/@ComputerHistoryMuseum" \
   --format mp3 \
-  --output-dir ~/Archive/3b1b \
-  --playlist
+  --output-dir ~/Archive/ComputerHistory \
+  --playlist \
+  --rate-limit 5
 ```
 
-The tool will crawl all public videos, download each as high-quality MP3, and respect YouTube's rate limits to avoid triggering temporal anomalies. You can then sync the folder to your phone or cloud storage for learning on the go.
+This downloads every video from the channel, converts them to high-quality MP3, and organizes them by date. Perfect for building your own temporal library of knowledge.
 
-## Weekly Highlight: Temporal Alignment Milestone
+## Weekly Highlight: 2026-07-30
 
-**Week of 2026-07-27** – ytstream reached **100% temporal alignment** across all known branching paths. This means no matter which timeline you're operating in (Sacred Timeline, branching realities, or quantum-adjacent streams), the tool will produce identical, deterministic output. Also, experimental support for **quantum-entangled downloads** has been introduced – two instances of ytstream on different devices can now download complementary segments of a video and reassemble them, effectively halving the time cost. Use `--quantum-mirror` to activate.
+This week, ytstream processed **2,847 unique video requests** across the TVA multiverse, with a **99.8% success rate** in temporal extraction. The most popular format requested was MP3 (63%), followed by MP4 (31%) and WebM (6%). The longest single stream lasted **12 hours 47 minutes** – a full conference playlist. Keep streaming, time agents!
 
 ## Changelog
 
-### [1.0.1] – 2026-07-30
+### [1.0.1] - 2026-07-30
+- Added `--channel` support for downloading all videos from a YouTube channel (with automatic pagination)
+- Introduced `--rate-limit` to control requests per minute (default: 10)
+- Fixed a rare temporal collision when using `--branch-timeline` on macOS
+- Improved error messages for playlist parsing failures
+- Updated internal HTTP client to handle 429 retry delays gracefully
 
-- **Added** `--branch-timeline` flag for isolated execution environments.
-- **Fixed** audio extraction in non-linear timelines (timestamps after branching events now resolved correctly).
-- **Improved** rate‑limiting logic to prevent “Temporal Nexus” warnings from YouTube’s backend.
-- **Deprecated** `--legacy-fallback` in favor of automatic timeline detection.
+---
 
-### [1.0.0] – 2026-07-15
-
-- Initial release of ytstream.
-- Core features: download video/audio, handle playlists, stream-only mode.
-- TVA Temporal Compliance certification.
-
-## Metrics & TVA Stats
-
-| Metric                     | Value            |
-|----------------------------|------------------|
-| Total seconds saved        | 42,769,104       |
-| Timelines pruned           | 0                |
-| Temporal anomalies fixed   | 17               |
-| Videos downloaded (all timelines) | 1,337,420  |
-| Branching paths tested     | 12               |
-| Compliant timelines        | 100%             |
-
-> *“If you don’t archive it, the timeline will prune it.”* — TVA Temporal Engineering
+*Maintained by shubhyagami for the TVA Temporal Engineering division. All timelines are safe with ytstream.*
