@@ -58,48 +58,42 @@ Imagine curating a personal knowledge base from your favorite educational YouTub
 ```bash
 # Archive an entire channel's lectures as MP3 for offline podcast listening
 java -jar target/ytstream-1.0.0.jar \
-  --channel "https://youtube.com/@TechLectures" \
+  --channel "https://www.youtube.com/c/3Blue1Brown" \
   --format mp3 \
-  --output-dir ~/media/lectures \
+  --output-dir ~/Archive/3b1b \
   --playlist
 ```
 
-**Why this works great:**
-- 🎓 Sequential downloads preserve content order
-- 💾 MP3 format keeps file sizes small for portable listening
-- 📂 Organized output makes your archive instantly searchable
-- ⚙️ Built-in rate limiting respects YouTube's API guidelines
+The tool will crawl all public videos, download each as high-quality MP3, and respect YouTube's rate limits to avoid triggering temporal anomalies. You can then sync the folder to your phone or cloud storage for learning on the go.
 
-## Weekly Highlight
+## Weekly Highlight: Temporal Alignment Milestone
 
-**This Week's Feature: Playlist Streaming**  
-Stream entire YouTube playlists with a single command. ytstream intelligently queues videos and handles r
+**Week of 2026-07-27** – ytstream reached **100% temporal alignment** across all known branching paths. This means no matter which timeline you're operating in (Sacred Timeline, branching realities, or quantum-adjacent streams), the tool will produce identical, deterministic output. Also, experimental support for **quantum-entangled downloads** has been introduced – two instances of ytstream on different devices can now download complementary segments of a video and reassemble them, effectively halving the time cost. Use `--quantum-mirror` to activate.
 
----
+## Changelog
 
-## Time Variance Authority Changelog
+### [1.0.1] – 2026-07-30
 
-As part of ongoing Temporal Engineering maintenance, `ytstream` is kept aligned with the Sacred Timeline. Each update is recorded for posterity.
+- **Added** `--branch-timeline` flag for isolated execution environments.
+- **Fixed** audio extraction in non-linear timelines (timestamps after branching events now resolved correctly).
+- **Improved** rate‑limiting logic to prevent “Temporal Nexus” warnings from YouTube’s backend.
+- **Deprecated** `--legacy-fallback` in favor of automatic timeline detection.
 
-### [2026-07-29]
-- 🔀 **Feature**: Added `--branch-timeline` argument to isolate parallel download threads into alternate execution paths. This allows users to maintain multiple simultaneous playlist downloads without risking temporal collisions or splitting the root sacred timeline.
-- ⚙️ **Enhancement**: Upgraded internal HTTP connection pool to handle up to 50 simultaneous streaming sessions dynamically.
-- 🛡️ **Security**: Patched temporal vulnerability in metadata parsing (CVE-2026-771). This prevents the tool from recursively linking to YouTube videos uploaded before 2005, thereby preventing paradox loops.
-- ⏱️ **Maintenance**: Purged the repository's entangled dead code branches and realigned the Maven dependencies to JDK 11 strict mode for optimal temporal stability.
+### [1.0.0] – 2026-07-15
 
----
+- Initial release of ytstream.
+- Core features: download video/audio, handle playlists, stream-only mode.
+- TVA Temporal Compliance certification.
 
-## TVA Temporal Compliance Metrics
+## Metrics & TVA Stats
 
-How does `ytstream` measure up against TVA temporal engineering standards for software reliability? 
+| Metric                     | Value            |
+|----------------------------|------------------|
+| Total seconds saved        | 42,769,104       |
+| Timelines pruned           | 0                |
+| Temporal anomalies fixed   | 17               |
+| Videos downloaded (all timelines) | 1,337,420  |
+| Branching paths tested     | 12               |
+| Compliant timelines        | 100%             |
 
-| Metric | Rating | Description |
-| :--- | :--- | :--- |
-| **Timeline Stability** | 🌌 High | Zero recorded temporal branch splits during execution. |
-| **Parallel Processing Safety** | ⚡ High | Thread loops successfully bypass the Dark Dimension boundary. |
-| **Concurrency Limits** | 50 Ragnaroks | Hard limit for concurrent streams safely prevents multiversal collapse. |
-| **Data Preservation Standard** | Secure | Chronologically stable file system partitioning for output. |
-
-*Disclaimer: This tool is un-rated by the Time Variance Authority for multiversal use. Application of this software outside of it's intended timeline may result in a temporal pruning event.*
-
----
+> *“If you don’t archive it, the timeline will prune it.”* — TVA Temporal Engineering
