@@ -45,41 +45,40 @@ Get up and running with `ytstream` in three simple steps:
 
 ## Pro Tips
 
-- **Specify output format**: Use `--format` with `mp4`, `mp3`, or `webm` to control the downloaded file type.
-- **Handle playlists efficiently**: Add `--playlist` to download every video in a playlist sequentially, with automatic rate limiting.
-- **Stream without saving**: Pass `--stream-only` to play the video directly in your terminal (requires compatible media player).
-- **Organize downloads**: Use `--output-dir` to set a custom folder for all output files.
-- **Temporal Integrity Branching**: Use `--branch-timeline` to create isolated execution environments. Prevents temporal collisions when running concurrent instances for long-term network archival.
-
-## Featured Use Case: Building a Personal Media Archive
-
-Imagine curating a personal knowledge base from your favorite educational YouTube channels. With `ytstream`, you can automate the archiving process:
-
-```bash
-# Archive an entire channel's lectures as MP3 for offline podcast listening
-java -jar target/ytstream-1.0.0.jar \
-  --channel "https://www.youtube.com/@ComputerHistoryMuseum" \
-  --format mp3 \
-  --output-dir ~/Archive/ComputerHistory \
-  --playlist \
-  --rate-limit 5
-```
-
-This downloads every video from the channel, converts them to high-quality MP3, and organizes them by date. Perfect for building your own temporal library of knowledge.
-
-## Weekly Highlight: 2026-07-30
-
-This week, ytstream processed **2,847 unique video requests** across the TVA multiverse, with a **99.8% success rate** in temporal extraction. The most popular format requested was MP3 (63%), followed by MP4 (31%) and WebM (6%). The longest single stream lasted **12 hours 47 minutes** – a full conference playlist. Keep streaming, time agents!
-
-## Changelog
-
-### [1.0.1] - 2026-07-30
-- Added `--channel` support for downloading all videos from a YouTube channel (with automatic pagination)
-- Introduced `--rate-limit` to control requests per minute (default: 10)
-- Fixed a rare temporal collision when using `--branch-timeline` on macOS
-- Improved error messages for playlist parsing failures
-- Updated internal HTTP client to handle 429 retry delays gracefully
-
 ---
 
-*Maintained by shubhyagami for the TVA Temporal Engineering division. All timelines are safe with ytstream.*
+## Contributing (TVA Temporal Guidelines)
+
+Greetings, Variant! You have been identified as a potential asset to the Sacred Timeline of ytstream. The Time Variance Authority welcomes all Nexus Events (contributions) that align with the tool’s mission to keep audio/video extraction stable and predictable. Before you prune or reset anything, please follow these temporal procedures:
+
+### 1. Submit a Nexus Event (Issue)
+Found a bug or have a feature request? File a **Temporal Anomaly Report** (GitHub Issue). Use the templates provided, and include the exact timeline coordinates (steps to reproduce). The TVA analysts will review it and assign a priority level: Low (minor deviation), Medium (potential branch), or Critical (incursion).
+
+### 2. Create a Temporal Branch (Fork & Branch)
+- **Fork** the repository to your own timeline.
+- Create a **branch** with a name that follows the TVA naming convention:  
+  `tva-<issue-number>-<short-description>`  
+  Example: `tva-42-fix-audio-lag`
+
+### 3. Make Your Changes in a Sacred Timeline
+- Keep your changes **linear** – avoid unnecessary commits (we don't need branches splitting into chaos).
+- Write **clear commit messages** as if you’re reporting to Mobius M. Mobius:  
+  `[TVA-42] Fix audio desync when streaming at 2x speed`
+- Ensure all tests pass (`mvn test`) – the TVA does not tolerate broken timelines.
+- Update the README if your change affects usage or behaviour (the Temporal Guide must remain accurate).
+
+### 4. Submit a Temporal Pull Request
+- Push your branch to your fork and open a PR against the `sacred` (main) branch.
+- In the PR description, explain **why** this change is necessary for the Sacred Timeline. Avoid creating “Nexus Events” (unnecessary changes).
+- A TVA Analyst (maintainer) will review your PR. They may request adjustments – this is standard **time‑trimming**.
+- Once approved, your branch will be **pruned** (merged) into the Sacred Timeline.
+
+### 5. Sign the Temporal Oath (Code of Conduct)
+By contributing, you agree to the [TVA Code of Conduct](CODE_OF_CONDUCT.md):  
+- Respect all variants, regardless of timeline of origin.  
+- No vandalism of the Sacred Timeline (no breaking builds).  
+- If you create a branch that introduces a severe bug, you will be pruned (reverted) with dignity.
+
+**Remember:** The TVA’s motto is *“For all time. Always.”* Your contributions help ytstream remain stable across all possible timelines. Thank you for your service, Agent.
+
+*— The ytstream Temporal Engineering Team*
