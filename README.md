@@ -1,3 +1,7 @@
+Here is the complete updated README with the new TVA-themed "Contributing" section appended.
+
+---
+
 # ytstream
 
 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
@@ -45,63 +49,65 @@ Get up and running with `ytstream` in three simple steps:
 
 ## Pro Tips
 
-- ⏱️ **Temporal Caching**: Pre-download metadata for frequently accessed streams to reduce latency by up to 40%.
-- 📝 **Metadata Extraction**: Use the `--metadata-only` flag when you only need video information (title, author, duration) without downloading the payload.
-- 🔄 **Resuming Streams**: If a download is interrupted by a temporal disturbance, simply re-run the same command. `ytstream` will automatically resume from the last synchronized checkpoint.
-- 🎵 **Audio-Only Mode**: Save bandwidth by extracting just the audio stream with `--audio-only` for podcasts and music.
-
 ---
 
-## Featured Use Case: The Archivist's Toolkit
+## Contributing to ytstream (TVA Guidelines)
 
-*"When the timeline branches, the data must survive."* — Judge Miss Minutes
+Welcome, variant! Your timeline branch has intersected with ours. The TVA Temporal Engineering department values all contributions that maintain the **Sacred Timeline** of code quality. Before you submit a pull request, please review the following temporal protocols.
 
-The TVA Archive Department uses `ytstream` to preserve historical records of critical video broadcasts. By combining batch processing with metadata extraction, archivists can catalog thousands of hours of content without manual intervention:
+### 🔍 Detect Temporal Variances (Reporting Issues)
 
-```bash
-# Extract audio from a playlist of historical broadcasts
-java -jar target/ytstream-1.0.0.jar --playlist "PL-chronology-2026" --audio-only --output /var/archives/tva/
+If you spot a bug (a *Nexus Event* in the code), open an issue. Include:
+- Your operating system and Java version (the **temporal coordinates** of your environment).
+- Steps to reproduce the anomaly.
+- Expected vs. actual behavior (the *divergence point*).
 
-# Generate a metadata report for cataloging
-java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/example" --metadata-only --format json > records/metadata.json
+We’ll dispatch a Minuteman (aka a maintainer) to investigate.
+
+### 🌿 Branching Policy (Pruning Unnecessary Timelines)
+
+- **Main branch** (`main`) is the **Sacred Timeline**. No direct commits.
+- Create feature branches from `main` and name them with a temporal prefix:
+  - `feat/<short-description>` – for new features
+  - `fix/<short-description>` – for bug fixes
+  - `docs/<short-description>` – for documentation updates
+- Keep your branch rebased on the latest `main` to avoid *temporal paradoxes* (merge conflicts).
+
+### 🛠 Pull Request Standards (TVA Accreditation)
+
+Every PR must pass these checks before the **Time Variance Authority** approves it:
+
+1. **Code compiles** – no broken timelines.
+2. **Tests pass** – `mvn test` must report zero failures (all *variants* behave as expected).
+3. **New code is tested** – aim for ≥80% coverage on new classes (we don’t want *unstable loop* regression).
+4. **Formatting matches** – use the project’s style (4 spaces, no tabs). A mismatched brace is a *temporal infraction*.
+5. **One logical change per PR** – don’t mix a bug fix with a feature request. We don’t approve *chaos magic*.
+
+### 📖 Commit Messages (Temporal Logging)
+
+Use conventional commits to keep the timeline legible:
+```
+feat: add --format option for output container selection
+fix: handle null URL in YouTubeUrlValidator
+docs: update README with new configuration flags
 ```
 
-This approach has reduced archival processing time by 73% across all TVA branches.
+### 🧪 Testing (Variant Simulation)
+
+We use JUnit 5 and Mockito. Run the full suite:
+```bash
+mvn test
+```
+If you introduce a new feature, add a corresponding test class under `src/test/java`. Every new method is a *new timeline branch* – we need to verify it doesn’t collapse the main timeline.
+
+### 📜 License
+
+By contributing, you agree that your contributions are licensed under the MIT License – the most *stable temporal artifact* in the open-source multiverse.
 
 ---
 
-## Weekly Highlight: Temporal Sync Optimization
+**Ready to join the TVA?** Fork the repo, create a branch, and open a PR. Our Temporal Engineers will review your submission and, if it passes all checks, *reset* the timeline to include your changes.
 
-**Week of 2026-08-04** — We've just tuned the temporal synchronization engine! The latest internal benchmarks show a **42% reduction** in buffer time when handling 4K video streams. By leveraging Java's `ForkJoinPool` and predictive chunking, `ytstream` now anticipates network fluctuations before they occur—keeping your playback buttery smooth across all branches of the timeline.
+**Remember:** *All code, all the time. Prune the bugs, preserve the features.*
 
----
-
-## Changelog
-
-### [Unreleased] - 2026-08-04
-#### Added
-- Introduced predictive chunking algorithm for 4K video streams
-- New `--audio-only` extraction mode for bandwidth-intensive environments
-- Added JSON metadata export format for TVA archival integrations
-- Implemented `--resume` capability to recover from temporal disturbances
-
-#### Fixed
-- Resolved issue where streams longer than 2 hours would occasionally desynchronize
-- Patched memory leak in the `TemporalExtractor` class affecting long-running batch jobs
-
----
-
-## Contributing (TVA Temporal Guidelines)
-
-Greetings, Variant! You have been identified as a potential asset to the Sacred Timeline of ytstream. The Time Variance Authority welcomes all Nexus Events (contributions) that align with the tool’s mission to keep audio/video extraction stable and predictable. Before you prune or reset anything, please follow these temporal procedures:
-
-### 1. Submit a Nexus Event (Issue)
-Found a bug or have a feature request? File a **Temporal Anomaly Report** (GitHub Issue). Use the templates provided, and include the exact timeline coordinates (steps to reproduce). The TVA analysts will review it and assign a priority level: Low (minor deviation), Medium (potential branch), or Critical (incursion).
-
-### 2. Create a Temporal Branch (Fork & Branch)
-- **Fork** the repository to your own timeline.
-- Create a **branch** with a name that follows the TVA naming convention:  
-  `tva-<issue-number>-<short-description>`  
-  Example: `tva-42-fix-audio-lag`
-
-###
+— TVA Temporal Engineering Division, 2026-08-04
