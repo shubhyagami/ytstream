@@ -1,13 +1,6 @@
-Here is the fully updated README with a filled "Pro Tips" section and a new "Changelog" entry, keeping all existing content intact.
-
-```markdown
 # ytstream
 
-▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-█  ╔═══════════════════════╗  █
-█  ║  ▶ ytstream v1.0     ║  █
-█  ╚═══════════════════════╝  █
-▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+A command-line tool to extract and stream audio and video from YouTube on your terms.
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/shubhyagami/ytstream/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
@@ -16,14 +9,23 @@ Here is the fully updated README with a filled "Pro Tips" section and a new "Cha
 [![GitHub stars](https://img.shields.io/github/stars/shubhyagami/ytstream?style=social)](https://github.com/shubhyagami/ytstream/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/shubhyagami/ytstream?style=social)](https://github.com/shubhyagami/ytstream/network)
 [![Downloads](https://img.shields.io/github/downloads/shubhyagami/ytstream/total)](https://github.com/shubhyagami/ytstream/releases)
-[![Maintenance](https://img.shields.io/badge/maintained-yes-success)](https://github.com/shubhyagami/ytstream/graphs/commit-activity)
-[![Temporal Compliance](https://img.shields.io/badge/temporal_alignment-100%25-purple)](https://github.com/shubhyagami/ytstream)
 
-> *"Time is what we want most, but what we use worst. With ytstream, you take control of your temporal bandwidth—extracting audio and video on your terms, synchronized to your timeline."* — TVA Temporal Engineering 
+## Features
 
-## Quick Start
+- Extract audio (`mp3`) or combined audio/video (`mp4`).
+- Override automatic quality detection (supports `480p`, `720p`, `1080p`).
+- Batch processing via text files containing URLs.
+- Dry-run mode for testing downloads before fetching data.
+- Customizable output directories.
 
-Get up and running with `ytstream` in three simple steps:
+## Getting Started
+
+### Prerequisites
+
+- Java 11 or higher
+- Maven
+
+### Installation
 
 1. **Clone the repository**
    ```bash
@@ -31,7 +33,7 @@ Get up and running with `ytstream` in three simple steps:
    cd ytstream
    ```
 
-2. **Build the project** (requires Java 11+ and Maven)
+2. **Build the project**
    ```bash
    mvn clean package
    ```
@@ -41,48 +43,48 @@ Get up and running with `ytstream` in three simple steps:
    java -jar target/ytstream-1.0.0.jar --help
    ```
 
-   For example, to stream a YouTube video by URL:
-   ```bash
-   java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
-   ```
+### Usage
+
+To stream a YouTube video by URL:
+```bash
+java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
+```
 
 ## Pro Tips
 
 - **Choose your output format**: Use `--output-format mp3` to extract audio only, or `--output-format mp4` for combined audio/video. Default is `mp4`.
 - **Select quality**: Append `--quality 720p` (or `1080p`, `480p`) to override automatic quality detection.
 - **Batch download**: Provide a text file with one URL per line using `--url-list playlist.txt` to process multiple videos in one command.
-- **Dry-run mode**: Add `--dry-run` to see what would be downloaded without actually fetching anything – perfect for testing your timeline before committing.
-- **Output directory**: Specify `--output-dir ./my_clips` to keep your temporal artifacts organized.
-- **Verbose logging**: Use `--verbose` to watch every step of the temporal extraction process – useful for debugging timeline anomalies.
+- **Dry-run mode**: Add `--dry-run` to see what would be downloaded without actually fetching anything—perfect for testing your configuration before committing.
+- **Output directory**: Specify `--output-dir ./my_clips` to keep your downloads organized.
+- **Verbose logging**: Use `--verbose` to watch every step of the extraction process—useful for debugging network or parsing issues.
 
----
+## Contributing
 
-## Contributing to ytstream (TVA Guidelines)
+Contributions are welcome! Before submitting a pull request, please review the following guidelines.
 
-Welcome, variant! Your timeline branch has intersected with ours. The TVA Temporal Engineering department values all contributions that maintain the **Sacred Timeline** of code quality. Before you submit a pull request, please review the following temporal protocols.
+### Reporting Issues
 
-### 🔍 Detect Temporal Variances (Reporting Issues)
+If you spot a bug, please open an issue. Include:
+- Your operating system and Java version.
+- Steps to reproduce the issue.
+- Expected vs. actual behavior.
 
-If you spot a bug (a *Nexus Event* in the code), open an issue. Include:
-- Your operating system and Java version (the **temporal coordinates** of your environment).
-- Steps to reproduce the anomaly.
-- Expected vs. actual behavior (the *divergence point*).
+### Branching Policy
 
-We’ll dispatch a Minuteman (aka a maintainer) to investigate.
-
-### 🌿 Branching Policy (Pruning Unnecessary Timelines)
-
-- **Main branch** (`main`) is the **Sacred Timeline**. No direct commits.
-- Create feature branches from `main` and name them with a temporal prefix:
+- The `main` branch is protected; no direct commits are allowed.
+- Create feature branches from `main` and name them with a clear prefix (e.g., `feature/add-playlist-support`, `bugfix/fix-audio-stall`).
+- Ensure all tests pass and code follows the project's style guidelines before submitting a PR.
 
 ## Changelog
 
 ### 2026-08-05 – v1.0.1 “Temporal Refinement”
 - Added `--dry-run` flag for safe preview of download operations.
-- Improved error handling for expired YouTube URLs (pruned dead timelines).
+- Improved error handling for expired YouTube URLs.
 - Introduced `--output-format` and `--quality` flags for finer control.
-- Updated internal HTTP client to reduce temporal drift during streams.
-- Fixed a Nexus Event where audio extraction would stall on long videos.
-```
+- Updated internal HTTP client to reduce latency during streams.
+- Fixed a bug where audio extraction would stall on long videos.
 
-The README now includes practical pro tips and a changelog entry for today’s date, while preserving the TVA theme and all original content.
+### 2026-08-08 – README Cleanup
+- Restructured README for clarity and better readability.
+- Removed extraneous thematic elements to ensure standard professional documentation.
