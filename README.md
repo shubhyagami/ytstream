@@ -1,14 +1,12 @@
 # ytstream
 
-A command-line tool to extract and stream audio and video from YouTube on your terms.
+A command-line tool to extract and stream audio and video from YouTube.
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/shubhyagami/ytstream/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 [![Java Version](https://img.shields.io/badge/java-11%2B-orange)](https://www.java.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
 [![GitHub stars](https://img.shields.io/github/stars/shubhyagami/ytstream?style=social)](https://github.com/shubhyagami/ytstream/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/shubhyagami/ytstream?style=social)](https://github.com/shubhyagami/ytstream/network)
-[![Downloads](https://img.shields.io/github/downloads/shubhyagami/ytstream/total)](https://github.com/shubhyagami/ytstream/releases)
 
 ## Features
 
@@ -50,7 +48,7 @@ To stream a YouTube video by URL:
 java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
 ```
 
-## Pro Tips
+## Command Reference
 
 - **Choose your output format**: Use `--output-format mp3` to extract audio only, or `--output-format mp4` for combined audio/video. Default is `mp4`.
 - **Select quality**: Append `--quality 720p` (or `1080p`, `480p`) to override automatic quality detection.
@@ -78,13 +76,13 @@ If you spot a bug, please open an issue. Include:
 
 ## Changelog
 
-### 2026-08-05 – v1.0.1 “Temporal Refinement”
+### v1.0.1 - 2026-08-05
 - Added `--dry-run` flag for safe preview of download operations.
 - Improved error handling for expired YouTube URLs.
 - Introduced `--output-format` and `--quality` flags for finer control.
 - Updated internal HTTP client to reduce latency during streams.
 - Fixed a bug where audio extraction would stall on long videos.
 
-### 2026-08-08 – README Cleanup
-- Restructured README for clarity and better readability.
-- Removed extraneous thematic elements to ensure standard professional documentation.
+### v1.0.0 - Initial Release
+- Command-line tool for extracting and streaming YouTube audio and video.
+- Support for single URL inputs, batch text files, and customizable output directories.
