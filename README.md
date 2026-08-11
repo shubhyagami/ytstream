@@ -12,7 +12,7 @@ A command-line tool to extract and stream audio and video from YouTube.
 - Extract audio (`mp3`) or combined audio/video (`mp4`).
 - Override automatic quality detection (`480p`, `720p`, `1080p`).
 - Batch processing via text files containing URLs.
-- Dry-run mode for testing downloads before fetching data.
+- Dry-run mode to preview downloads before fetching data.
 - Customizable output directories.
 - Verbose logging for debugging network or parsing issues.
 
