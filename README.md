@@ -50,7 +50,8 @@ java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
 
 ### Command Reference
 
-- **`--output-format`**: Extract audio only (`mp3`) or combined audio/video (`mp4`). Default is `mp4`.
+- **`--url`**: The URL of the YouTube video to process.
+- **`--output-format`**: Extract audio only (`mp3`) or combined audio/video (`mp4`). Defaults to `mp4`.
 - **`--quality`**: Override automatic quality detection. Accepts `480p`, `720p`, or `1080p`.
 - **`--url-list`**: Process multiple videos by providing a text file with one URL per line.
 - **`--dry-run`**: Preview what would be downloaded without fetching anything. Useful for testing configurations.
