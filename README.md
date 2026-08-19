@@ -1,6 +1,6 @@
 # ytstream
 
-A command-line tool to extract and stream audio and video from YouTube.
+A command-line tool to extract and stream audio and video from YouTube. It supports single URLs, batch processing, and customizable output formats.
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/shubhyagami/ytstream/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
@@ -10,10 +10,10 @@ A command-line tool to extract and stream audio and video from YouTube.
 ## Features
 
 - Extract audio (`mp3`) or combined audio/video (`mp4`).
-- Override automatic quality detection (`480p`, `720p`, `1080p`).
-- Batch processing via text files containing URLs.
-- Dry-run mode to preview downloads before fetching data.
-- Customizable output directories.
+- Override automatic quality detection with standard resolutions (`480p`, `720p`, `1080p`).
+- Batch processing via text files containing lists of URLs.
+- Dry-run mode to preview download configurations before fetching data.
+- Customizable output directories to keep downloads organized.
 - Verbose logging for debugging network or parsing issues.
 
 ## Getting Started
