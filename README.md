@@ -1,6 +1,6 @@
 # ytstream
 
-A command-line tool to extract and stream audio and video from YouTube. It supports single URLs, batch processing, and customizable output formats.
+A command-line tool to extract and stream audio and video from YouTube. It supports single URLs, batch processing via text files, and customizable output formats.
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/shubhyagami/ytstream/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
@@ -9,12 +9,12 @@ A command-line tool to extract and stream audio and video from YouTube. It suppo
 
 ## Features
 
-- Extract audio (`mp3`) or combined audio/video (`mp4`).
-- Override automatic quality detection with standard resolutions (`480p`, `720p`, `1080p`).
-- Batch processing via text files containing lists of URLs.
-- Dry-run mode to preview download configurations before fetching data.
-- Customizable output directories to keep downloads organized.
-- Verbose logging for debugging network or parsing issues.
+- **Audio and Video Extraction:** Extract audio only (`mp3`) or combined audio/video (`mp4`).
+- **Quality Control:** Override automatic quality detection with standard resolutions (`480p`, `720p`, `1080p`).
+- **Batch Processing:** Process multiple videos by providing a text file with one URL per line.
+- **Dry-Run Mode:** Preview download configurations before fetching data.
+- **Custom Output Directories:** Keep your downloads organized with custom paths.
+- **Verbose Logging:** Output detailed logs for debugging network or parsing issues.
 
 ## Getting Started
 
@@ -25,18 +25,18 @@ A command-line tool to extract and stream audio and video from YouTube. It suppo
 
 ### Installation
 
-1. **Clone the repository**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/shubhyagami/ytstream.git
    cd ytstream
    ```
 
-2. **Build the project**
+2. **Build the project:**
    ```bash
    mvn clean package
    ```
 
-3. **Run the tool**
+3. **Run the tool:**
    ```bash
    java -jar target/ytstream-1.0.0.jar --help
    ```
@@ -51,11 +51,11 @@ java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
 ### Command Reference
 
 - **`--url`**: The URL of the YouTube video to process.
+- **`--url-list`**: Process multiple videos by providing a text file with one URL per line.
 - **`--output-format`**: Extract audio only (`mp3`) or combined audio/video (`mp4`). Defaults to `mp4`.
 - **`--quality`**: Override automatic quality detection. Accepts `480p`, `720p`, or `1080p`.
-- **`--url-list`**: Process multiple videos by providing a text file with one URL per line.
-- **`--dry-run`**: Preview what would be downloaded without fetching anything. Useful for testing configurations.
 - **`--output-dir`**: Specify a custom directory (e.g., `./my_clips`) to keep downloads organized.
+- **`--dry-run`**: Preview what would be downloaded without fetching anything. Useful for testing configurations.
 - **`--verbose`**: Output detailed logs for every step of the extraction process.
 
 ## Contributing
@@ -71,7 +71,7 @@ If you spot a bug, please open an issue. Include:
 
 ### Branching Policy
 
-- The `main` branch is protected; no direct commits are allowed.
+- The `main` branch is protected; direct commits are not allowed.
 - Create feature branches from `main` with a clear prefix (e.g., `feature/add-playlist-support`, `bugfix/fix-audio-stall`).
 - Ensure all tests pass and code follows the project's style guidelines before submitting a PR.
 
