@@ -1,11 +1,11 @@
 # ytstream
 
-A command-line tool to extract and stream audio and video from YouTube. It supports single URLs, batch processing via text files, and customizable output formats.
-
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/shubhyagami/ytstream/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 [![Java Version](https://img.shields.io/badge/java-11%2B-orange)](https://www.java.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+
+A command-line tool to extract and stream audio and video from YouTube. It supports single URLs, batch processing via text files, and customizable output formats.
 
 ## Features
 
@@ -25,18 +25,18 @@ A command-line tool to extract and stream audio and video from YouTube. It suppo
 
 ### Installation
 
-1. **Clone the repository:**
+1. Clone the repository:
    ```bash
    git clone https://github.com/shubhyagami/ytstream.git
    cd ytstream
    ```
 
-2. **Build the project:**
+2. Build the project:
    ```bash
    mvn clean package
    ```
 
-3. **Run the tool:**
+3. Run the tool:
    ```bash
    java -jar target/ytstream-1.0.0.jar --help
    ```
