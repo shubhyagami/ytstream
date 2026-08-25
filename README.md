@@ -3,21 +3,22 @@
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 [![Java Version](https://img.shields.io/badge/java-11%2B-orange)](https://www.java.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+[![Javadocs](https://img.shields.io/badge/javadocs-available-blue)](https://shubhyagami.github.io/ytstream/javadoc/)
 
-ytstream is a command-line tool for extracting and streaming audio and video from YouTube. It supports processing single URLs, batch operations via text files, and customizable output formats.
+ytstream is a command-line tool that extracts and streams audio and video from YouTube. It offers various features to make the process efficient and customizable.
 
-### Features
+## Key Features
 
-- **Audio and Video Extraction**: Extract audio only (`mp3`) or combined audio/video (`mp4`).
+- **Audio and Video Extraction**: Obtain audio-only (`mp3`) or combined audio-video (`mp4`) from YouTube videos.
 - **Quality Control**: Override automatic quality detection with standard resolutions (`480p`, `720p`, `1080p`).
 - **Batch Processing**: Process multiple videos by providing a text file with one URL per line.
-- **Dry-Run Mode**: Preview download configurations before fetching data.
-- **Custom Output Directories**: Keep your downloads organized with custom paths.
+- **Dry-Run Mode**: Preview download configurations without fetching data.
+- **Custom Output Directories**: Organize your downloads using custom paths.
 - **Verbose Logging**: Output detailed logs for debugging network or parsing issues.
 
-### Getting Started
+## Getting Started
 
-Before using ytstream, ensure you have Java 11 or higher installed, along with Maven.
+Before using ytstream, ensure you have Java 11 or higher installed. You can then proceed to download and build the project.
 
 ```bash
 git clone https://github.com/shubhyagami/ytstream.git
@@ -26,7 +27,7 @@ mvn clean package
 java -jar target/ytstream-1.0.0.jar --help
 ```
 
-### Usage
+## Usage
 
 To stream a YouTube video by URL:
 
@@ -34,26 +35,26 @@ To stream a YouTube video by URL:
 java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
 ```
 
-See the command reference below for available flags and their descriptions.
-
 ### Command Reference
 
-- **`--url`**: The URL of the YouTube video to process.
-- **`--url-list`**: Process multiple videos by providing a text file with one URL per line.
-- **`--output-format`**: Extract audio only (`mp3`) or combined audio/video (`mp4`). Defaults to `mp4`.
-- **`--quality`**: Override automatic quality detection. Accepts `480p`, `720p`, or `1080p`.
-- **`--output-dir`**: Specify a custom directory (e.g., `./my_clips`) to keep downloads organized.
-- **`--dry-run`**: Preview what would be downloaded without fetching anything. Useful for testing configurations.
-- **`--verbose`**: Output detailed logs for every step of the extraction process.
+The following flags are available for customizing the extraction process:
 
-### Contributing
+- **`--url`**: Required. The URL of the YouTube video to process.
+- **`--url-list`**: Process multiple videos from a text file with one URL per line.
+- **`--output-format`**: Optional. Extract audio-only (`mp3`) or combined audio-video (`mp4`). Defaults to `mp4`.
+- **`--quality`**: Optional. Override automatic quality detection. Accepts `480p`, `720p`, or `1080p`.
+- **`--output-dir`**: Optional. Specify a custom directory (e.g., `./my_clips`) to keep downloads organized.
+- **`--dry-run`**: Optional. Preview what would be downloaded without fetching anything.
+- **`--verbose`**: Optional. Output detailed logs for every step of the extraction process.
 
-Contributions are welcome! Before submitting a pull request, please review the contributing guidelines.
+## Contributing
 
-### Changelog
+Contributions are welcome! Before submitting a pull request, please review the [contributing guidelines](CONTRIBUTING.md).
+
+## Changelog
 
 ### v1.0.1 - 2026-08-05
-- Added `--dry-run` flag for safe preview of download operations.
+- Introduced `--dry-run` flag for safe preview of download operations.
 - Improved error handling for expired YouTube URLs.
 
 ### v1.0.0 - Initial Release
