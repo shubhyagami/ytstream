@@ -9,12 +9,12 @@ ytstream is a command-line tool that extracts and streams audio and video from Y
 
 ## Key Features
 
-- **Audio and Video Extraction**: Obtain audio-only (`mp3`) or combined audio-video (`mp4`) from YouTube videos.
-- **Quality Control**: Override automatic quality detection with standard resolutions (`480p`, `720p`, `1080p`).
-- **Batch Processing**: Process multiple videos by providing a text file with one URL per line.
-- **Dry-Run Mode**: Preview download configurations without fetching data.
-- **Custom Output Directories**: Organize your downloads using custom paths.
-- **Verbose Logging**: Output detailed logs for debugging network or parsing issues.
+*    **Audio and Video Extraction**: Obtain audio-only (mp3) or combined audio-video (mp4) from YouTube videos.
+*    **Quality Control**: Override automatic quality detection with standard resolutions (480p, 720p, 1080p).
+*    **Batch Processing**: Process multiple videos by providing a text file with one URL per line.
+*    **Dry-Run Mode**: Preview download configurations without fetching data.
+*    **Custom Output Directories**: Organize downloads using custom paths.
+*    **Verbose Logging**: Output detailed logs for debugging network or parsing issues.
 
 ## Getting Started
 
@@ -32,20 +32,20 @@ java -jar target/ytstream-1.0.0.jar --help
 To stream a YouTube video by URL:
 
 ```bash
-java -jar target/ytstream-1.0.0.jar --url "https://youtu.be/dQw4w9WgXcQ"
+java -jar target/ytstream-1.0.0.jar --url https://youtu.be/dQw4w9WgXcQ
 ```
 
 ### Command Reference
 
 The following flags are available for customizing the extraction process:
 
-- **`--url`**: Required. The URL of the YouTube video to process.
-- **`--url-list`**: Process multiple videos from a text file with one URL per line.
-- **`--output-format`**: Optional. Extract audio-only (`mp3`) or combined audio-video (`mp4`). Defaults to `mp4`.
-- **`--quality`**: Optional. Override automatic quality detection. Accepts `480p`, `720p`, or `1080p`.
-- **`--output-dir`**: Optional. Specify a custom directory (e.g., `./my_clips`) to keep downloads organized.
-- **`--dry-run`**: Optional. Preview what would be downloaded without fetching anything.
-- **`--verbose`**: Optional. Output detailed logs for every step of the extraction process.
+*    **`--url`**: Required. The URL of the YouTube video to process.
+*    **`--url-list`**: Process multiple videos from a text file with one URL per line.
+*    **`--output-format`**: Optional. Extract audio-only (mp3) or combined audio-video (mp4). Defaults to mp4.
+*    **`--quality`**: Optional. Override automatic quality detection. Accepts 480p, 720p, or 1080p.
+*    **`--output-dir`**: Optional. Specify a custom directory (e.g., ./my\_clips) to keep downloads organized.
+*    **`--dry-run`**: Optional. Preview what would be downloaded without fetching anything.
+*    **`--verbose`**: Optional. Output detailed logs for every step of the extraction process.
 
 ## Contributing
 
@@ -56,7 +56,3 @@ Contributions are welcome! Before submitting a pull request, please review the [
 ### v1.0.1 - 2026-08-05
 - Introduced `--dry-run` flag for safe preview of download operations.
 - Improved error handling for expired YouTube URLs.
-
-### v1.0.0 - Initial Release
-- Command-line tool for extracting and streaming YouTube audio and video.
-- Support for single URL inputs, batch text files, and customizable output directories.
