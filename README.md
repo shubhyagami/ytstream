@@ -1,33 +1,44 @@
 # ytstream
 
-A lightweight, command‑line utility for downloading and converting YouTube videos to **MP3** (audio‑only) or **MP4** (video‑audio).
+A lightweight, command‑line utility for downloading YouTube videos and converting them to **MP3** (audio‑only) or **MP4** (video‑audio).
 
 ![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/ytstream/ci.yml?branch=main&style=flat)
 ![License](https://img.shields.io/github/license/shubhyagami/ytstream?style=flat)
 ![Java](https://img.shields.io/badge/java-11%2B-orange.svg)
 ![Contributions welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Building](#building)
+- [Getting Started](#getting-started)
+- [Command Line Options](#command-line-options)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [Changelog](#changelog)
+- [License](#license)
+
 ## Overview
 
-`ytstream` downloads a YouTube video, optionally converts it to the desired format, and saves it to a directory you choose. The tool is written in Java and uses the popular youtube‑dl library under the hood.
+`ytstream` downloads a YouTube video, optionally converts it to the desired format, and saves it to a directory of your choice. The tool is written in Java and relies on the youtube‑dl library for video extraction.
 
 ## Features
 
-- Download a single video or batch‑download from a text file.
-- Convert to `mp3` (audio‑only) or `mp4` (video‑audio).
-- Choose video quality for MP4 downloads (`480p`, `720p`, `1080p`).
-- Preview actions with `--dry-run` before any network traffic.
-- Specify an output directory; defaults to the current working directory.
-- Verbose logging for debugging.
+- Download a single video or batch‑download from a plain text file
+- Convert to `mp3` (audio‑only) or `mp4` (video‑audio)
+- Specify video resolution for MP4 downloads (`480p`, `720p`, `1080p`)
+- Preview actions with `--dry-run` before any network traffic
+- Choose a custom output directory; defaults to the current working directory
+- Verbose logging for debugging
 
 ## Prerequisites
 
 - Java 11 or newer (OpenJDK, Temurin, etc.)
 - Maven 3.6+
 
-## Getting Started
-
-Clone the repository and build the executable JAR:
+## Building
 
 ```bash
 git clone https://github.com/shubhyagami/ytstream.git
@@ -37,7 +48,9 @@ mvn clean package
 
 The JAR is located in `target/` (e.g., `ytstream-1.0.0.jar`).
 
-Run the tool with the options shown in the help text:
+## Getting Started
+
+Run the tool with the help flag to see all options:
 
 ```bash
 java -jar target/ytstream-1.0.0.jar --help
@@ -47,16 +60,22 @@ java -jar target/ytstream-1.0.0.jar --help
 
 ```bash
 # Download a single video as MP3
-java -jar target/ytstream-1.0.0.jar --url https://youtu.be/xyz123 --output-format mp3
+java -jar target/ytstream-1.0.0.jar \
+  --url https://youtu.be/xyz123 \
+  --output-format mp3
 
 # Batch download from a file, storing results in ./downloads
-java -jar target/ytstream-1.0.0.jar --url-list urls.txt --output-dir ./downloads
+java -jar target/ytstream-1.0.0.jar \
+  --url-list urls.txt \
+  --output-dir ./downloads
 
 # Preview a command without downloading
-java -jar target/ytstream-1.0.0.jar --url https://youtu.be/xyz123 --dry-run
+java -jar target/ytstream-1.0.0.jar \
+  --url https://youtu.be/xyz123 \
+  --dry-run
 ```
 
-## Usage
+## Command Line Options
 
 | Option | Required | Description |
 |--------|----------|-------------|
@@ -71,7 +90,7 @@ java -jar target/ytstream-1.0.0.jar --url https://youtu.be/xyz123 --dry-run
 
 ## Contributing
 
-Pull requests are welcome! Before opening an issue or PR, please read:
+Pull requests are welcome! Before contributing, please read:
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
