@@ -1,44 +1,55 @@
 # ytstream
 
-A lightweight, command‑line utility for downloading YouTube videos and converting them to **MP3** (audio‑only) or **MP4** (video‑audio).
+A lightweight command‑line tool for downloading YouTube videos and converting them to **MP3** (audio‑only) or **MP4** (video‑audio).
 
 ![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/ytstream/ci.yml?branch=main&style=flat)
 ![License](https://img.shields.io/github/license/shubhyagami/ytstream?style=flat)
 ![Java](https://img.shields.io/badge/java-11%2B-orange.svg)
 ![Contributions welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
+---
+
 ## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
 - [Prerequisites](#prerequisites)
-- [Building](#building)
-- [Getting Started](#getting-started)
-- [Command Line Options](#command-line-options)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Command‑Line Options](#command-line-options)
 - [Examples](#examples)
 - [Contributing](#contributing)
 - [Changelog](#changelog)
 - [License](#license)
 
+---
+
 ## Overview
 
-`ytstream` downloads a YouTube video, optionally converts it to the desired format, and saves it to a directory of your choice. The tool is written in Java and relies on the youtube‑dl library for video extraction.
+`ytstream` downloads a YouTube video, optionally converts it to the chosen format, and writes the result to a directory you specify.  
+It is pure Java and depends on the **youtube‑dl** library for media extraction.
+
+---
 
 ## Features
 
-- Download a single video or batch‑download from a plain text file
-- Convert to `mp3` (audio‑only) or `mp4` (video‑audio)
-- Specify video resolution for MP4 downloads (`480p`, `720p`, `1080p`)
-- Preview actions with `--dry-run` before any network traffic
-- Choose a custom output directory; defaults to the current working directory
-- Verbose logging for debugging
+- Download a single video or batch‑download from a plain‑text list.
+- Convert to `mp3` (audio‑only) or `mp4` (video‑audio).
+- Select an MP4 resolution (`480p`, `720p`, `1080p`).
+- Preview scheduled actions with `--dry-run` before any network activity.
+- Choose a custom output directory; defaults to the current working directory.
+- Verbose mode for debugging information.
+
+---
 
 ## Prerequisites
 
-- Java 11 or newer (OpenJDK, Temurin, etc.)
-- Maven 3.6+
+- Java 11 or newer (OpenJDK, Temurin, etc.)  
+- Maven 3.6+
 
-## Building
+---
+
+## Installation
 
 ```bash
 git clone https://github.com/shubhyagami/ytstream.git
@@ -46,17 +57,20 @@ cd ytstream
 mvn clean package
 ```
 
-The JAR is located in `target/` (e.g., `ytstream-1.0.0.jar`).
+The executable JAR is created in `target/` (e.g., `ytstream-1.0.0.jar`).  
+No external dependencies are required beyond the JDK.
 
-## Getting Started
+---
 
-Run the tool with the help flag to see all options:
+## Quick Start
+
+Run the help flag to list all options:
 
 ```bash
 java -jar target/ytstream-1.0.0.jar --help
 ```
 
-### Quick examples
+### One‑liner examples
 
 ```bash
 # Download a single video as MP3
@@ -75,34 +89,62 @@ java -jar target/ytstream-1.0.0.jar \
   --dry-run
 ```
 
-## Command Line Options
+---
+
+## Command‑Line Options
 
 | Option | Required | Description |
 |--------|----------|-------------|
-| `--url <URL>` | Yes (unless `--url-list` is used) | Single YouTube video URL. |
+| `--url <URL>` | Yes (unless `--url-list` is used) | A single YouTube video URL. |
 | `--url-list <FILE>` | No | Text file containing one YouTube URL per line. |
 | `--output-format <mp3|mp4>` | No | Target format (`mp3` for audio‑only, `mp4` for video‑audio). Defaults to `mp4`. |
 | `--quality <480p|720p|1080p>` | No | Force a specific resolution for MP4 downloads. |
 | `--output-dir <PATH>` | No | Directory where downloaded files will be stored. |
-| `--dry-run` | No | Print the commands that would be executed without downloading. |
+| `--dry-run` | No | Print commands that would be executed without performing a download. |
 | `--verbose` | No | Emit detailed logs for each step. |
 | `--help` | No | Show this help message. |
 
+---
+
+## Examples
+
+```bash
+# Convert a video to MP3
+java -jar target/ytstream-1.0.0.jar \
+  --url https://youtu.be/dQw4w9WgXcQ \
+  --output-format mp3 \
+  --output-dir ~/Music
+
+# Download a playlist (one URL per line) at 720p
+java -jar target/ytstream-1.0.0.jar \
+  --url-list playlist.txt \
+  --output-format mp4 \
+  --quality 720p \
+  --output-dir ~/Downloads/playlist
+```
+
+---
+
 ## Contributing
 
-Pull requests are welcome! Before contributing, please read:
+Pull requests are welcome!  
+Please read our guidelines:
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
+---
 
 ## Changelog
 
 **v1.0.1 – 2026‑08‑05**
 
-- Added `--dry-run` flag for previewing operations.
+- Added `--dry-run` flag for previewing operations.  
 - Improved handling of expired YouTube URLs.
 
-See the full history in [CHANGELOG.md](CHANGELOG.md).
+For the full history, see the [CHANGELOG.md](CHANGELOG.md) file.
+
+---
 
 ## License
 
