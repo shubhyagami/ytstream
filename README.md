@@ -1,6 +1,6 @@
 # ytstream
 
-A lightweight command‑line utility that downloads YouTube videos and can instantly convert them into **MP3** (audio‑only) or **MP4** (video‑audio).
+A lightweight command‑line tool that downloads YouTube videos and can instantly convert them into **MP3** (audio‑only) or **MP4** (video‑audio).
 
 ![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/ytstream/ci.yml?branch=main&style=flat)
 ![License](https://img.shields.io/github/license/shubhyagami/ytstream?style=flat)
@@ -26,26 +26,26 @@ A lightweight command‑line utility that downloads YouTube videos and can insta
 
 ## Overview
 
-`ytstream` fetches a YouTube video, optionally converts the media to the desired format, and writes the file to a user‑specified directory.  
-The tool is written in pure Java and relies on the `youtube‑dl` library to extract media streams.
+`ytstream` fetches a YouTube video, optionally converts it to the desired format, and writes the file to a directory chosen by the user.  
+The tool is written in pure Java and uses the `youtube-dl` library for media extraction.
 
 ---
 
 ## Features
 
-- Download a single video or a batch from a plain‑text URL list.
-- Export to `mp3` (audio‑only) or `mp4` (video‑audio).
-- Choose MP4 resolution (`480p`, `720p`, `1080p`).
-- Preview operations before execution with `--dry-run`.
-- Custom output directory (defaults to the current working directory).
-- Verbose logging for debugging.
+* Download a single video or a batch from a text file.
+* Export to MP3 (audio‑only) or MP4 (video‑audio).
+* Select MP4 resolution (`480p`, `720p`, `1080p`).
+* Preview scheduled actions with `--dry-run`.
+* Store downloads in a custom output directory (defaults to the current working directory).
+* Verbose logging for debugging.
 
 ---
 
 ## Prerequisites
 
-- Java 11 or newer (OpenJDK, Temurin, etc.)
-- Maven 3.6+
+* Java 11 or newer (OpenJDK, Temurin, etc.)
+* Maven 3.6+
 
 ---
 
@@ -57,7 +57,7 @@ cd ytstream
 mvn clean package
 ```
 
-The executable JAR appears in `target/` (e.g. `ytstream-1.0.0.jar`). No extra dependencies are required beyond the JDK.
+The executable JAR is produced in the `target/` directory (e.g. `ytstream-1.0.0.jar`). No additional runtime dependencies are required beyond the JDK.
 
 ---
 
@@ -125,11 +125,10 @@ java -jar target/ytstream-1.0.0.jar \
 
 ## Contributing
 
-Pull requests are welcome.  
-See the guidelines:
+Pull requests are welcome. Please read the contribution guidelines:
 
-- [CONTRIBUTING.md](CONTRIBUTING.md)
-- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+* [CONTRIBUTING.md](CONTRIBUTING.md)
+* [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ---
 
@@ -137,8 +136,8 @@ See the guidelines:
 
 **v1.0.1 – 2026‑08‑05**
 
-- Added `--dry-run` flag for previewing operations.
-- Improved handling of expired YouTube URLs.
+* Added `--dry-run` flag for previewing operations.
+* Improved handling of expired YouTube URLs.
 
 Full history is in [CHANGELOG.md](CHANGELOG.md).
 
