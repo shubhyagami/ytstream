@@ -3,122 +3,96 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/ytstream/ci.yml?branch=main&style=flat&logo=github)](https://github.com/shubhyagami/ytstream/actions)
 [![License](https://img.shields.io/github/license/shubhyagami/ytstream?style=flat)](LICENSE)
 [![Java](https://img.shields.io/badge/java-11%2B-orange.svg)](https://www.oracle.com/java/)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Latest Release](https://img.shields.io/github/v/release/shubhyagami/ytstream.svg?style=flat&logo=github)](https://github.com/shubhyagami/ytstream/releases)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-**ytstream** is a lightweight Java‑based CLI tool that lets you download YouTube videos and convert them to MP3 (audio) or MP4 (video).  
-It supports single URLs, text files with multiple URLs, and playlist files, and provides options for quality, output location, dry‑run, and verbose logging.
-
----
+**ytstream** is a lightweight Java CLI for downloading YouTube videos and converting them to MP3 audio or MP4 video. It accepts a single URL or a file containing multiple URLs, and supports options for output format, video quality, output location, dry-run previews, and verbose logging.
 
 ## Features
 
 - Download a single YouTube video
-- Batch download from a file or playlist
+- Batch download from a URL list file
 - Export to MP3 or MP4
-- Choose video quality (480p, 720p, 1080p) – ignored for MP3
-- Dry‑run mode to preview the download queue
-- Custom output directory
-- Verbose logging for troubleshooting
+- Choose video quality (480p, 720p, 1080p; ignored for MP3)
+- Preview planned downloads with `--dry-run`
+- Set a custom output directory
+- Enable verbose logging for troubleshooting
 
----
+## Requirements
 
-## Prerequisites
+- Java 11 or newer (JDK)
+- Maven 3.6 or newer (only needed to build from source)
 
-- **Java 11 +** (JDK 11 or newer)
-- **Maven 3.6 +** (to build from source)
+## Getting Started
 
----
+Clone the repository and build the JAR:
 
-## Quick Start
+    git clone https://github.com/shubhyagami/ytstream.git
+    cd ytstream
+    mvn clean package
 
-```bash
-git clone https://github.com/shubhyagami/ytstream.git
-cd ytstream
-mvn clean package
-```
+The build creates a JAR in `target/`, for example `target/ytstream-1.0.1.jar`. Verify it runs:
 
-The JAR will be in `target/` (e.g. `target/ytstream-1.0.1.jar`).  
-Run it with:
+    java -jar target/ytstream-*.jar --help
 
-```bash
-java -jar target/ytstream-*.jar --help
-```
-
-Alternatively, download the latest release JAR from the **Releases** page.
-
----
+You can also download the latest release JAR from the [Releases](https://github.com/shubhyagami/ytstream/releases) page.
 
 ## Usage
 
-```bash
-java -jar target/ytstream-*.jar [options]
-```
+Run the JAR with one of the input options:
 
-Run `--help` to list all available command‑line options.
+    java -jar target/ytstream-*.jar [options]
 
-### Command‑Line Options
+Run `--help` to see all available command-line options.
+
+### Command-Line Options
 
 | Option | Required | Type | Description |
 |--------|----------|------|-------------|
-| `--url <URL>` | Yes **or** `--url-list` | String | A single YouTube video URL. |
-| `--url-list <FILE>` | No | Path | Text file containing one URL per line. |
-| `--output-format <mp3|mp4>` | No | Enum | Target format. Default: `mp4`. |
-| `--quality <480p|720p|1080p>` | No | Enum | Video resolution (ignored for MP3). |
-| `--output-dir <DIR>` | No | Path | Where to save downloaded files. Default: current directory. |
+| `--url <URL>` | Yes, or `--url-list` | String | A single YouTube video URL. |
+| `--url-list <FILE>` | Yes, or `--url` | Path | Text file containing one URL per line. |
+| `--output-format <mp3\|mp4>` | No | Enum | Target format. Default: `mp4`. |
+| `--quality <480p\|720p\|1080p>` | No | Enum | Video resolution. Ignored for MP3. |
+| `--output-dir <DIR>` | No | Path | Directory where downloads are saved. Default: current directory. |
 | `--dry-run` | No | Flag | Log planned actions without downloading. |
 | `--verbose` | No | Flag | Enable detailed debug logging. |
 | `--help` | No | Flag | Display help and exit. |
 
-> **Note:** Exactly one of `--url` or `--url-list` must be supplied.
+> **Note:** Supply exactly one of `--url` or `--url-list`.
 
 ### Examples
 
-#### 1. Download a single video as MP3
+Download a single video as MP3:
 
-```bash
-java -jar target/ytstream-*.jar \
-  --url https://youtu.be/dQw4w9WgXcQ \
-  --output-format mp3 \
-  --output-dir ~/Music
-```
+    java -jar target/ytstream-*.jar \
+      --url https://youtu.be/dQw4w9WgXcQ \
+      --output-format mp3 \
+      --output-dir ~/Music
 
-#### 2. Batch download at 720p to a custom folder
+Batch download at 720p to a custom folder:
 
-```bash
-java -jar target/ytstream-*.jar \
-  --url-list playlist.txt \
-  --output-format mp4 \
-  --quality 720p \
-  --output-dir ~/Downloads/yt-videos
-```
+    java -jar target/ytstream-*.jar \
+      --url-list playlist.txt \
+      --output-format mp4 \
+      --quality 720p \
+      --output-dir ~/Downloads/yt-videos
 
-#### 3. Preview a batch download (dry‑run)
+Preview a batch download without downloading:
 
-```bash
-java -jar target/ytstream-*.jar --url-list urls.txt --dry-run
-```
-
----
+    java -jar target/ytstream-*.jar --url-list urls.txt --dry-run
 
 ## Contributing
 
-Pull requests are welcome.  
-Please read the [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) guidelines before submitting an issue or PR.  
-Ensure that unit tests pass and code style is followed.
-
----
+Pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before opening an issue or PR. Make sure unit tests pass and follow the existing code style.
 
 ## Changelog
 
-**1.0.1 – 2026‑08‑05**
+**1.0.1 – 2026-08-05**
 
-- Added `--dry-run` flag for previewing download queues.
+- Added `--dry-run` for previewing download queues.
 - Improved error handling and rotation for expired YouTube URLs.
 
-See the full history in [CHANGELOG.md](CHANGELOG.md).
-
----
+See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 ## License
 
