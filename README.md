@@ -1,3 +1,4 @@
+[K[2m  [2mmodel z-ai/glm-5.3-flash failed, trying next...[0m[0m
 # ytstream
 
 [![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/ytstream/ci.yml?branch=main&style=flat&logo=github)](https://github.com/shubhyagami/ytstream/actions)
@@ -6,72 +7,54 @@
 [![Latest Release](https://img.shields.io/github/v/release/shubhyagami/ytstream.svg?style=flat&logo=github)](https://github.com/shubhyagami/ytstream/releases)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-**ytstream** is a lightweight Java command-line tool that downloads YouTube videos and can save them as MP3 audio or MP4 video. It accepts a single video URL or a text file containing multiple URLs, with options for:
-
-- output format (`mp3` or `mp4`)
-- video quality (`480p`, `720p`, `1080p`; ignored for `mp3`)
-- output directory
-- dry-run preview
-- verbose logging
+**ytstream** is a lightweight Java command-line tool for downloading YouTube videos. It accepts a single video URL or a text file containing multiple URLs, and can save the results as MP3 audio or MP4 video. Optional flags control output format, video quality, output directory, dry-run previews, and verbose logging.
 
 > **Note:** This tool is intended for personal use. Please respect YouTube's Terms of Service and applicable copyright laws when downloading content.
 
----
-
-## ✨ Features
+## Features
 
 - Download a single video or batch-download from a URL list file.
-- Save output as MP3 (audio) or MP4 (video).
-- Choose the video quality for MP4 output (480p, 720p, 1080p).
-- Preview the download plan with `--dry-run` before committing.
+- Save output as MP3 audio or MP4 video.
+- Choose MP4 quality: `480p`, `720p`, or `1080p`.
+- Preview the download plan with `--dry-run` before downloading.
 - Write results to any directory you choose.
-- Verbose mode for troubleshooting.
+- Enable verbose logging for troubleshooting.
 
----
-
-## 📦 Getting Started
+## Getting Started
 
 ### Requirements
 
 - Java 11 or later
-- Maven 3.6+ (only needed to build from source)
+- Maven 3.6+ (only required when building from source)
 
 ### Installation
 
-**Pre-built binary**
+**Pre-built JAR**
 
 Download the latest release JAR from the [Releases](https://github.com/shubhyagami/ytstream/releases) page.
 
 **From source**
 
-```bash
-git clone https://github.com/shubhyagami/ytstream.git
-cd ytstream
-mvn clean package
-```
+    git clone https://github.com/shubhyagami/ytstream.git
+    cd ytstream
+    mvn clean package
 
-This produces an executable JAR in `target/` (for example, `target/ytstream-1.0.1.jar`). Verify the installation with:
+The build produces an executable JAR in `target/` (for example, `target/ytstream-1.0.1.jar`). Verify the installation with:
 
-```bash
-java -jar target/ytstream-*.jar --help
-```
+    java -jar target/ytstream-*.jar --help
 
----
+## Usage
 
-## 🚀 Usage
+    java -jar target/ytstream-*.jar [options]
 
-```bash
-java -jar target/ytstream-*.jar [options]
-```
-
-### Command-Line Options
+### Command-line options
 
 | Option | Required | Value | Description |
 |--------|----------|-------|-------------|
-| `--url <URL>` | Yes¹ | String | Single YouTube video URL. |
-| `--url-list <FILE>` | Yes¹ | Path | Text file with one URL per line. |
-| `--output-format <mp3\|mp4>` | No | Enum | Target format. Defaults to `mp4`. |
-| `--quality <480p\|720p\|1080p>` | No | Enum | Desired video resolution. Ignored for `mp3`. |
+| `--url <URL>` | One of¹ | String | Single YouTube video URL. |
+| `--url-list <FILE>` | One of¹ | Path | Text file with one URL per line. |
+| `--output-format <format>` | No | `mp3` or `mp4` | Target format. Defaults to `mp4`. |
+| `--quality <quality>` | No | `480p`, `720p`, or `1080p` | Desired video resolution. Ignored for `mp3`. |
 | `--output-dir <DIR>` | No | Path | Destination directory. Defaults to the current directory. |
 | `--dry-run` | No | Flag | Show planned actions without downloading. |
 | `--verbose` | No | Flag | Enable detailed debug logging. |
@@ -83,52 +66,31 @@ java -jar target/ytstream-*.jar [options]
 
 **Download a single video as MP3**
 
-```bash
-java -jar target/ytstream-*.jar \
-  --url https://youtu.be/dQw4w9WgXcQ \
-  --output-format mp3 \
-  --output-dir ~/Music
-```
+    java -jar target/ytstream-*.jar \
+      --url https://youtu.be/dQw4w9WgXcQ \
+      --output-format mp3 \
+      --output-dir ~/Music
 
 **Batch download at 720p to a custom folder**
 
-```bash
-java -jar target/ytstream-*.jar \
-  --url-list playlist.txt \
-  --output-format mp4 \
-  --quality 720p \
-  --output-dir ~/Downloads/yt-videos
-```
+    java -jar target/ytstream-*.jar \
+      --url-list playlist.txt \
+      --output-format mp4 \
+      --quality 720p \
+      --output-dir ~/Downloads/yt-videos
 
 **Preview a batch download**
 
-```bash
-java -jar target/ytstream-*.jar \
-  --url-list urls.txt \
-  --dry-run
-```
+    java -jar target/ytstream-*.jar \
+      --url-list urls.txt \
+      --dry-run
 
----
+## Contributing
 
-## 🤝 Contributing
+Pull requests are welcome. Please read the [contributing guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) before opening an issue or pull request. Make sure the test suite passes and the existing code style is followed.
 
-Pull requests are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) before opening an issue or pull request. Make sure all tests pass and that the existing code style is followed.
+    mvn test
 
----
+## Changelog
 
-## 🗓️ Changelog
-
-### 1.0.1 – 2026-08-05
-
-- Added `--dry-run` for previewing the download queue.
-- Improved error handling for expired YouTube URLs.
-
-### 1.0.0 – Initial release
-
-See the full history in [CHANGELOG.md](CHANGELOG.md).
-
----
-
-## 📄 License
-
-Distributed under the [MIT License](LICENSE).
+### 1.0.1 – 2026
